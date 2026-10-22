@@ -1,0 +1,19 @@
+{
+  "name": "rizqhalal-whatsapp-gateway",
+  "version": "1.0.0",
+  "private": true,
+  "description": "The always-on WhatsApp sender for RizqHalal. Drains whatsapp_outbox over Baileys.",
+  "main": "index.js",
+  "type": "commonjs",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.45.4",
+    "@whiskeysockets/baileys": "6.7.24",
+    "pino": "^9.4.0"
+  }
+}

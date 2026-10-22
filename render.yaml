@@ -1,0 +1,21 @@
+services:
+  - type: web
+    name: rizqhalal-whatsapp-gateway
+    runtime: node
+    plan: free
+    region: singapore
+    buildCommand: npm install --no-audit --no-fund
+    startCommand: node index.js
+    healthCheckPath: /health
+    autoDeploy: true
+    envVars:
+      - key: NODE_VERSION
+        value: 20.18.0
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_SERVICE_ROLE_KEY
+        sync: false
+      - key: APP_URL
+        value: https://rizqhalal.site
+      - key: CRON_SECRET
+        sync: false
