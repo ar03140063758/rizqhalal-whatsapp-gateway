@@ -64,7 +64,9 @@ const {
 
 const SUPABASE_URL = process.env.SUPABASE_URL;
 const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
-const PORT = Number(process.env.PORT || 10000);
+const PORT = Number(
+  process.env.PORT || process.env.SERVER_PORT || 10000,
+);
 const LOG_LEVEL = process.env.LOG_LEVEL || 'info';
 const APP_URL = (process.env.APP_URL || 'https://rizqhalal.site').replace(
   /\/$/,

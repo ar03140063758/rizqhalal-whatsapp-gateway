@@ -30,7 +30,7 @@ with [Baileys](https://github.com/WhiskeySockets/Baileys).
 | `SUPABASE_SERVICE_ROLE_KEY` | the service-role key (never the anon key) |
 | `APP_URL` | `https://rizqhalal.site` (class-reminder ping) |
 | `CRON_SECRET` | the same value as the Vercel project |
-| `PORT` | the port the host assigns (local default `10000`) |
+| `PORT` | the port the host assigns (local default `10000`; Pterodactyl's `SERVER_PORT` is used when `PORT` is absent) |
 | `LOG_LEVEL` | `info` (or `warn` in production) |
 
 The gateway also reads a local `.env` file next to `index.js`. That lets a host
