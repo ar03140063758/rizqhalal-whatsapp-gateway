@@ -1,6 +1,37 @@
 'use strict';
 
 /**
+ * Read a local .env file when the host cannot inject environment variables
+ * (Pterodactyl, cPanel, a plain VPS). The file is gitignored; on Render/Vercel
+ * the real environment variables win because we never overwrite an existing
+ * process.env value.
+ */
+const fs = require('node:fs');
+const path = require('node:path');
+try {
+  const envPath = path.join(__dirname, '.env');
+  if (fs.existsSync(envPath)) {
+    for (const raw of fs.readFileSync(envPath, 'utf8').split(/\r?\n/)) {
+      const line = raw.trim();
+      if (!line || line.startsWith('#')) continue;
+      const eq = line.indexOf('=');
+      if (eq < 1) continue;
+      const key = line.slice(0, eq).trim().replace(/^export\s+/, '');
+      let value = line.slice(eq + 1).trim();
+      if (
+        (value.startsWith('"') && value.endsWith('"')) ||
+        (value.startsWith("'") && value.endsWith("'"))
+      ) {
+        value = value.slice(1, -1);
+      }
+      if (!process.env[key]) process.env[key] = value;
+    }
+  }
+} catch (err) {
+  console.warn('[gateway] could not read .env:', err.message);
+}
+
+/**
  * RizqHalal WhatsApp gateway
  * ============================================================================
  *
@@ -13,7 +44,7 @@
  *   - STOP is honoured forever, "1" is acknowledged,
  *   - the Baileys session lives in Supabase, so a restart does not need a
  *     new QR scan,
- *   - /health always answers 200 for Render and for the cPanel cron.
+ *   - /health always answers 200 for the host and an optional uptime cron.
  *
  * Run: npm install && npm start
  */
