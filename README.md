@@ -54,7 +54,7 @@ Open `http://localhost:10000/health`. The QR appears in
 Waifly's free plan is 300 MB RAM / 1 GB disk, runs Node.js 24/7 and needs no
 card. Render's free tier now asks for a card, so it is not used.
 
-1. `dash.waifly.com` -> create a **NodeJS** server.
+1. `dash.waifly.com` -> create a **NodeJS** server (Node 20 or newer).
 2. Open the server in `panel.waifly.com` and note the allocated port.
 3. Upload this folder (without `node_modules` and `.git`) through SFTP or the
    panel File Manager.
