@@ -49,28 +49,36 @@ npm start
 Open `http://localhost:10000/health`. The QR appears in
 `/v2/admin/whatsapp`, not in the terminal.
 
-## Deploy on Waifly (Pterodactyl, free)
+## Deploy on Botkeep (free)
 
-Waifly's free plan is 300 MB RAM / 1 GB disk, runs Node.js 24/7 and needs no
-card. Render's free tier now asks for a card, so it is not used.
+Botkeep's free plan is 512 MB RAM, 50% CPU and 1 GB storage, runs 24/7 with no
+sleep and no manual renewal, and needs no card or Discord account. It is the
+primary host for this gateway.
 
-1. `dash.waifly.com` -> create a **NodeJS** server (Node 20 or newer).
-2. Open the server in `panel.waifly.com` and note the allocated port.
-3. Upload this folder (without `node_modules` and `.git`) through SFTP or the
-   panel File Manager.
-4. In the panel console run `npm ci --omit=dev --omit=optional` (or
-   `npm install --omit=dev --omit=optional`). The two "install script not run"
-   warnings from Baileys/protobufjs are harmless.
-5. Create `.env` in the server root with the keys from the table above. Set
-   `PORT` to the allocated port if the panel does not inject `SERVER_PORT`.
-6. Startup command `node index.js`, main file `index.js`.
-7. Start the server and check the console for the gateway log line.
-8. Open `https://rizqhalal.site/v2/admin/whatsapp` and scan the QR with the
-   phone that will send the messages.
+1. Create an account at `https://botkeep.cloud/register` (email + password).
+2. Panel -> Create -> **Node.js** -> **ZIP** (or GitHub).
+   Upload a source-only archive - no `node_modules`, no `.env`.
+3. Start command: `npm start`. Choose Node 20 or newer.
+4. Allocate 512 MB RAM / 50% CPU / 1 GB storage.
+5. Open **Environment** and add:
+   - `SUPABASE_URL`
+   - `SUPABASE_SERVICE_ROLE_KEY`
+   - `APP_URL=https://rizqhalal.site`
+   - `CRON_SECRET` (the same value as Vercel)
+   - `LOG_LEVEL=info`
+6. Deploy, then open the console and wait for the health-server line.
+7. Open `https://rizqhalal.site/v2/admin/whatsapp` and scan the QR.
 
-WhatsApp traffic is outbound, so the gateway does not need a public port. If
-the panel gives a public URL, set `WHATSAPP_GATEWAY_URL` on Vercel to show the
-health URL inside the admin page.
+Botkeep installs dependencies from `package.json` / `package-lock.json`; do not
+upload `node_modules` or `.env`. The panel environment variables are read at
+runtime.
+
+### Other Pterodactyl hosts
+
+Waifly's free allocation is capacity-limited and may show paid plans only.
+Unixsys (256 MB, Discord login) and Bot-Hosting.net (256 MB, manual renewal
+every 4 days) are smaller fallbacks. The same source-only ZIP and `npm start`
+work there; set the environment variables in the panel.
 
 ## Scheduled jobs (cron-job.org)
 
