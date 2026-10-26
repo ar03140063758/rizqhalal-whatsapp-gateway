@@ -761,7 +761,13 @@ async function tick() {
     await handleAdminLogoutRequest();
     await recoverStuck();
 
-    if (!connected || !sock) return;
+    if (!connected || !sock) {
+      log('not connected in tick - attempting reconnect');
+      connect().catch((err) =>
+        logger.warn({ err: err.message }, 'reconnect attempt failed'),
+      );
+      return;
+    }
 
     const config = await getConfig();
     if (!config?.enabled) return;
